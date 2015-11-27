@@ -29,6 +29,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 
 /**
@@ -44,23 +46,16 @@ public class BookActivity extends Activity {
 
     private int mShortAnimationDuration;
 
-    public String url = "";
+    public String mainUrl = "https://api.douban.com/v2/book/search?q=小&start=0&count=9";
 
-    private String url1 = "https://api.douban.com/v2/book/search?q=小王子&start=10&count=1";
-    private String url2 = "https://api.douban.com/v2/book/search?q=若只如初見&start=10&count=1";
-    private String url3 = "https://api.douban.com/v2/book/search?q=麒麟&start=10&count=1";
-    private String url4 = "https://api.douban.com/v2/book/search?q=秘密&start=10&count=1";
-    private String url5 = "https://api.douban.com/v2/book/search?q=心理&start=10&count=1";
-    private String url6 = "https://api.douban.com/v2/book/search?q=小时代&start=10&count=1";
-    private String url7 = "https://api.douban.com/v2/book/search?q=你今天真好看&start=10&count=1";
-    private String url8 = "https://api.douban.com/v2/book/search?q=追风筝的人&start=10&count=1";
-    private String url9 = "https://api.douban.com/v2/book/search?q=生活与命运&start=10&count=1";
     private Book book;
+
     private RequestQueue queue;
 
-    private String BookUrl=null;
+    private String BookUrl = null;
 
-    private ArrayList<BookGridViewItem> lstImageItem;
+
+    private ArrayList<Book> lstImageItem;
     private GridView gridview;
     private BookAdapter bookAdapter;
 
@@ -71,9 +66,9 @@ public class BookActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
 
-        lstImageItem = new ArrayList<BookGridViewItem>();
+        lstImageItem = new ArrayList<Book>();
         gridview = (GridView) findViewById(R.id.gridview_book);
-        book = new Book();
+
         queue = Volley.newRequestQueue(this);
 
         mContentView = findViewById(R.id.content);
@@ -86,15 +81,7 @@ public class BookActivity extends Activity {
 
         showContentOrLoadingIndicator(mContentLoaded);
 
-        getBookInformation(url1);
-        getBookInformation(url2);
-        getBookInformation(url3);
-        getBookInformation(url4);
-        getBookInformation(url5);
-        getBookInformation(url6);
-        getBookInformation(url7);
-        getBookInformation(url8);
-        getBookInformation(url9);
+        getBookInformation(mainUrl);
     }
 
     public void getBookInformation(final String url) {
@@ -106,23 +93,25 @@ public class BookActivity extends Activity {
                         try {
 
                             BookUrl = url;
-
-                            BookGridViewItem item;
                             books = response.getJSONArray("books");
-                            response = books.getJSONObject(0);
-                            item = new BookGridViewItem();
-                            item.book_name = response.getString("title");
-                            item.book_image = response.getString("image");
-                            item.bookId = bookID;
-                            ++bookID;
-                            item.bookUrl = BookUrl;
+                            for(int i=0;i<books.length();i++) {
+                                JSONObject res = books.getJSONObject(i);
+                                book = new Book();
+                                book.setBookUrl(BookUrl);
+                                book.setTitle(res.getString("title"));
+                                book.setImage(res.getString("image"));
+                                book.setId(res.getString("id"));
+                                book.setBookId(bookID);
+                                ++bookID;
+                                lstImageItem.add(book);
+                            }
+                                Collections.sort(lstImageItem, new nameComparator());
 
-                            lstImageItem.add(item);
-                            Collections.sort(lstImageItem,new nameComparator());
-                            bookAdapter = new BookAdapter(BookActivity.this, lstImageItem);
-                            gridview.setAdapter(bookAdapter);
-                            bookAdapter.notifyDataSetChanged();
-                            gridview.setOnItemClickListener(ListViewMainClickListener);
+                                bookAdapter = new BookAdapter(BookActivity.this, lstImageItem);
+                                gridview.setAdapter(bookAdapter);
+                                bookAdapter.notifyDataSetChanged();
+                                gridview.setOnItemClickListener(ListViewMainClickListener);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -130,13 +119,21 @@ public class BookActivity extends Activity {
                 },
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("TAG", error.getMessage(), error);
                         new AlertDialog.Builder(BookActivity.this)
                                 .setMessage("网络有误")
-                                .setPositiveButton("OK",null)
-                                .show();
-                        finish();
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                    }
+                                })
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
 
+                                    }
+                                })
+                                .show();
                     }
                 });
         queue.add(jsonObjectRequest);
@@ -147,32 +144,34 @@ public class BookActivity extends Activity {
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
             Intent intent = new Intent();
 
-            intent.setClass(BookActivity.this,BookInformation.class);
-            intent.putExtra("url",lstImageItem.get(arg2).bookUrl);
+            intent.setClass(BookActivity.this, BookInformation.class);
+            String url = "https://api.douban.com/v2/book/"+lstImageItem.get(arg2).getId();
+            intent.putExtra("url", url);
             startActivity(intent);
         }
     };
 
-    static class nameComparator implements Comparator
-    {
+    static class nameComparator implements Comparator {
         @Override
         public int compare(Object o1, Object o2) {
-            BookGridViewItem b1 = (BookGridViewItem)o1;
-            BookGridViewItem b2 = (BookGridViewItem)o2;
+            Book b1 = (Book) o1;
+            Book b2 = (Book) o2;
 
-            if(b1.bookId == b2.bookId)
+            if (b1.getBookId() == b2.getBookId()) {
                 return 0;
-            else if(b1.bookId > b2.bookId)
-                return 1;
-            else
-                return -1;
+            } else {
+                if (b1.getBookId() > b2.getBookId()) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
         }
     }
 
-    private void showContentOrLoadingIndicator(boolean contentLoaded)
-    {
-        final View showView = contentLoaded ? mContentView:mLoadingView;
-        final View hideView = contentLoaded ?mLoadingView:mContentView;
+    private void showContentOrLoadingIndicator(boolean contentLoaded) {
+        final View showView = contentLoaded ? mContentView : mLoadingView;
+        final View hideView = contentLoaded ? mLoadingView : mContentView;
 
         showView.setAlpha(0f);
         showView.setVisibility(View.VISIBLE);
@@ -181,7 +180,6 @@ public class BookActivity extends Activity {
                 .alpha(1f)
                 .setDuration(mShortAnimationDuration)
                 .setListener(null);
-
 
         hideView.animate()
                 .alpha(0f)
@@ -193,26 +191,24 @@ public class BookActivity extends Activity {
                     }
                 });
     }
+
     public void serach_book(View view) {
-        Intent intent = new Intent(this, BookInformation.class);
 
         EditText editText = (EditText) findViewById(R.id.edit_book_name);
+        lstImageItem.clear();
+        String url = "https://api.douban.com/v2/book/search?q=" + editText.getText().toString() + "&start=0&count=3";
+        getBookInformation(url);
+    }
 
-        url = "https://api.douban.com/v2/book/search?q=" + editText.getText().toString() + "&start=10&count=1";
-        intent.putExtra("url", url);
+    public void test(View view) {
+        Intent intent = new Intent(this, test1.class);
         startActivity(intent);
     }
 
-    public void test(View view)
-    {
-        Intent intent = new Intent(this,test1.class);
-        startActivity(intent);
-    }
-
+    /*监听退出键，在退出时询问是否确定退出*/
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK)
-        {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             //创建退出对话框
             AlertDialog isExit = new AlertDialog.Builder(this).create();
             //设置对话框标题
@@ -220,19 +216,20 @@ public class BookActivity extends Activity {
             //设置对话框消息
             isExit.setMessage("确定要退出吗");
             //添加选择按钮并注册监听
-            isExit.setButton("确定",listener);
-            isExit.setButton2("取消",listener);
+            isExit.setButton("确定", listener);
+            isExit.setButton2("取消", listener);
             //显示对话框
             isExit.show();
         }
         return false;
     }
 
-    /**监听对话框里面的button点击事件*/
+    /**
+     * 监听对话框里面的button点击事件
+     */
     DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int which) {
-            switch(which)
-            {
+            switch (which) {
                 case AlertDialog.BUTTON_POSITIVE://“确定”按钮退出程序
                     finish();
                     break;

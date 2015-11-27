@@ -48,7 +48,7 @@ public class MovieInformation extends Activity{
 
         //给组件设置内容
         String movieImageUrl = movie.getImages_medium();
-        movieImage.setImageBitmap(returnBitMap(movieImageUrl));
+        movieImage.setImageBitmap(BitmapUtils.returnBitMap(movieImageUrl));
         movieTitle.setText(movie.getTitle());
         movieRatingBar.setRating(movie.getRating_averageF() / 2);
         movieRatingAverage.setText(movie.getRating_averageS());
@@ -60,30 +60,6 @@ public class MovieInformation extends Activity{
 
     }
 
-    //由url得到bitmap类型的图像
-    public Bitmap returnBitMap(String url)
-    {
-        URL myFileUrl = null;
-        Bitmap bitmap = null;
-        try {
-            myFileUrl = new URL(url);
-
-            HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
 
     //点击“查看详情”时的点击事件
     public void movieDetals(View view)

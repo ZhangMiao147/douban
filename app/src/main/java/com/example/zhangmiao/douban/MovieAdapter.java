@@ -88,36 +88,9 @@ public class MovieAdapter extends BaseAdapter{
             avatars.setText(movie.getAvatars());
             director.setText(movie.getDirectors());
             average.setText(movie.getRating_averageS());
-            imageView.setImageBitmap(returnBitMap(movie.getImages_medium()));
+            imageView.setImageBitmap(BitmapUtils.returnBitMap(movie.getImages_medium()));
 
         }
         return view;
     }
-
-    public Bitmap returnBitMap(String url)
-    {
-        URL myFileUrl = null;
-        Bitmap bitmap = null;
-        try {
-            myFileUrl = new URL(url);
-
-            HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
-        return bitmap;
-
-
-    }
-
 }

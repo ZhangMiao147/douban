@@ -20,6 +20,17 @@ import java.io.Serializable;
  * Created by zhangmiao on 15-11-13.
  */
 public class Book implements Serializable {
+    private int bookId;
+    private String bookUrl;
+
+    public String getBookUrl() {
+        return bookUrl;
+    }
+
+    public void setBookUrl(String bookUrl) {
+        this.bookUrl = bookUrl;
+    }
+
     private int rating_max; //评价的最大
     private String rating_numRaters;//评价的人数
     private float rating_averageF;//评价的平均分
@@ -50,82 +61,16 @@ public class Book implements Serializable {
     private String author_intro;
     private String summary;
     private String price;
-    private String testurl;
 
 
-    public String GetTestUrl() {
-        return testurl;
+    public int getBookId() {
+        return bookId;
     }
 
-    public JsonObjectRequest setAll(String url) {
-        this.testurl = url;
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url,
-                new Response.Listener<JSONObject>() {
-                    public void onResponse(JSONObject response) {
-                        JSONArray books = new JSONArray();
-                        try {
-                            books = response.getJSONArray("books");
-                            response = books.getJSONObject(0);
-
-                            String bookAuthor = "";
-                            String bookInformation = "";
-
-                            Book.this.summary = response.getString("summary");
-                            JSONArray author_book = new JSONArray();
-                            author_book = response.getJSONArray("author");
-                            author_first = author_book.getString(0);
-
-                            for (int i = 0; i < author_book.length(); i++) {
-                                bookAuthor += author_book.getString(i);
-                            }
-                            author_all = bookAuthor;
-                            title = response.getString("title");
-
-                            JSONObject rating_book = response.getJSONObject("rating");
-                            rating_max = rating_book.getInt("max");
-                            rating_min = rating_book.getInt("min");
-                            rating_averageF = (float) rating_book.getDouble("average");
-                            rating_averageS = rating_book.getString("average");
-                            rating_numRaters = rating_book.getString("numRaters");
-
-                            image = response.getString("image");
-                            publisher = response.getString("publisher");
-                            pubdate = response.getString("pubdate");
-                            bookInformation += author_first + '/' + publisher + '/' + pubdate;
-
-                            String bookTranslator = "";
-                            JSONArray translator_book = new JSONArray();
-                            translator_book = response.getJSONArray("translator");
-                            for (int i = 0; i < author_book.length(); i++) {
-                                bookTranslator += translator_book.getString(i) + "  ";
-                            }
-                            translator = bookTranslator;
-
-                            subtitle = response.getString("subtitle");
-                            origin_title = response.getString("origin_title");
-                            binding = response.getString("binding");
-                            catalog = response.getString("catalog");
-                            pages = response.getString("pages");
-                            alt = response.getString("alt");
-                            id = response.getString("id");
-                            isbn10 = response.getString("isbn10");
-                            isbn13 = response.getString("isbn13");
-                            alt_title = response.getString("alt_title");
-                            author_intro = response.getString("author_intro");
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("TAG", error.getMessage(), error);
-                    }
-                });
-        return jsonObjectRequest;
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
+
 
     public int getRating_max() {
         return rating_max;

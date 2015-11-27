@@ -85,13 +85,7 @@ public class BookInformation extends Activity {
                 new Response.Listener<JSONObject>() {
                     public void onResponse(JSONObject response) {
                         JSONArray books = new JSONArray();
-                        try {
-                            books = response.getJSONArray("books");
-                            response = books.getJSONObject(0);
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+
                         String bookAuthor = "";
                         String bookInformation = "";
                         try {
@@ -110,17 +104,14 @@ public class BookInformation extends Activity {
                             book.setTitle(response.getString("title"));
                             bookTitle.setText(book.getTitle());
                             JSONObject rating_book = response.getJSONObject("rating");
-                            book.setRating_max(rating_book.getInt("max"));
-                            book.setRating_min(rating_book.getInt("min"));
+
                             book.setRating_averageF((float) rating_book.getDouble("average"));
                             book.setRating_averageS(rating_book.getString("average"));
                             book.setRating_numRaters(rating_book.getString("numRaters"));
-                            bookRatingBar.setRating(book.getRating_averageF() / 2);
-                            bookRatingBar.setMax(book.getRating_max());
 
+                            bookRatingBar.setRating(book.getRating_averageF() / 2);
                             bookRatingAverage.setText(book.getRating_averageS());
                             bookRatingNum.setText(book.getRating_numRaters() + "人评价");
-
 
                             book.setImage(response.getString("image"));
                             getBookImage(book.getImage());
@@ -162,7 +153,6 @@ public class BookInformation extends Activity {
         queue.add(jsonObjectRequest);
     }
 
-
     public void onclickbookInf(View view)
     {
         Intent intent = new Intent(this,BookInf.class);
@@ -180,7 +170,6 @@ public class BookInformation extends Activity {
             textView.setEllipsize(null);
             textView.setSingleLine(flag);
             PackUp.setText("收起");
-
         }
         else
         {
@@ -189,6 +178,5 @@ public class BookInformation extends Activity {
             textView.setEllipsize(TextUtils.TruncateAt.END);
             PackUp.setText("更多");
         }
-
     }
 }

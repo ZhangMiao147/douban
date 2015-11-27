@@ -22,17 +22,18 @@ import java.util.List;
 /**
  * Created by zhangmiao on 15-11-19.
  */
-public class BookAdapter extends BaseAdapter{
-    //private Book book;
-    //private List<HashMap<String,Book>> list;
-    private BookGridViewItem gridViewItem;
-    private List<BookGridViewItem> list;
+public class BookAdapter extends BaseAdapter {
+
+    private Book book;
+
+    private List<Book> list;
     private LayoutInflater layoutInflater;
 
-    public BookAdapter(Context context,List<BookGridViewItem> list) {
+    public BookAdapter(Context context, List<Book> list) {
         layoutInflater = LayoutInflater.from(context);
         this.list = list;
     }
+
     @Override
     public int getCount() {
         return list.size();
@@ -58,44 +59,19 @@ public class BookAdapter extends BaseAdapter{
                 .penaltyLog().penaltyDeath().build());
 
         View view = null;
-        if(layoutInflater != null)
-        {
-            view = layoutInflater.inflate(R.layout.pho_list,null);
+        if (layoutInflater != null) {
+            view = layoutInflater.inflate(R.layout.pho_list, null);
 
-            ImageView imageView = (ImageView)view.findViewById(R.id.book_item_image);
+            ImageView imageView = (ImageView) view.findViewById(R.id.book_item_image);
 
-            TextView textView = (TextView)view.findViewById(R.id.book_item_name);
-            gridViewItem = list.get(position);
-            String image = gridViewItem.book_image;
-            String title = gridViewItem.book_name;
+            TextView textView = (TextView) view.findViewById(R.id.book_item_name);
 
-            imageView.setImageBitmap(returnBitMap(image));
+            book = list.get(position);
+            String image = book.getImage();
+            String title = book.getTitle();
+            imageView.setImageBitmap(BitmapUtils.returnBitMap(image));
             textView.setText(title);
         }
         return view;
-    }
-
-    public Bitmap returnBitMap(String url)
-    {
-        URL myFileUrl = null;
-        Bitmap bitmap = null;
-        try {
-            myFileUrl = new URL(url);
-
-            HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
-        return bitmap;
     }
 }
