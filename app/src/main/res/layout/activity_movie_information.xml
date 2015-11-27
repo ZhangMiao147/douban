@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/movie_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:scrollbarSize="20dp"
+        android:paddingRight="0dp"
+        android:paddingBottom="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" >
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <ImageView
+                android:id="@+id/movie_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:background="#ff6677"
+                android:src="@drawable/ic_launcher"/>
+            <TextView
+                android:id="@+id/movie_title"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="题目"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:layout_below="@+id/movie_image"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+            <RatingBar
+                android:id="@+id/movie_ratingBar"
+                android:numStars="5"
+                android:rating="3.0"
+                android:maxHeight="5dp"
+                android:maxWidth="5dp"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:scrollbarSize="10dp"
+                android:layout_below="@+id/movie_title"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+            <TextView
+                android:id="@+id/movie_rating_average"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9.2"
+                android:layout_alignTop="@+id/movie_ratingBar"
+                android:layout_toRightOf="@+id/movie_ratingBar"
+                android:layout_toEndOf="@+id/movie_ratingBar"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="23dp" />
+            <RelativeLayout
+                android:id="@+id/movie_group"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/movie_ratingBar"
+                android:onClick="onclickmovieInf">
+            <TextView
+                android:id="@+id/movie_inf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="导演"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/imageView"
+                android:layout_toStartOf="@+id/imageView" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_gray"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/imageView" />
+
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/movie_alt"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="查看详情"
+                android:layout_below="@+id/movie_group"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"
+                android:textColor="#0000aa"
+                android:onClick="movieDetals"
+                />
+        </RelativeLayout>
+
+    </ScrollView>
+</RelativeLayout>

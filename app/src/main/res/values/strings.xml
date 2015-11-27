@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">豆瓣</string>
+    <string name="welcom">欢迎进入豆瓣</string>
+    <string name="enter">进入豆瓣</string>
+    <string name="book">图书</string>
+    <string name="movie">电影</string>
+    <string name="music">音乐</string>
+    <string name="cate">美食</string>
+    <string name="picture">图片</string>
+    <string name="edit_message">请输入要搜索的书籍的名称</string>
+
+    <string name="action_settings">Settings</string>
+
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/flower3"
+        android:layout_marginTop="30dp"
+        android:id="@+id/flowerImage3"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+
+    <TextView
+        android:layout_width="260dp"
+        android:layout_height="32dp"
+        android:text="豆瓣让你的生活更有趣"
+        android:textColor="#000000"
+        android:textSize="25dp"
+        android:id="@+id/textView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/favicon"
+        android:layout_marginBottom="43dp"
+        android:id="@+id/imageView4"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/flowerImage3"
+        android:layout_alignStart="@+id/flowerImage3" />
+
+    <TextView
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:text="汇集一亿人的趣味"
+        android:textColor="#339900"
+        android:textSize="20dp"
+        android:layout_alignTop="@+id/imageView4"
+        android:layout_toRightOf="@+id/imageView4"
+        android:layout_toEndOf="@+id/imageView4" />
+</RelativeLayout>

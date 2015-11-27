@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.zhangmiao.douban" >
+    <uses-permission  android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/favicon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <!--
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        -->
+        <activity
+            android:name=".SplashActivity"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".BookActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
+            android:name=".BookInf"
+            android:label="@string/app_name"
+            android:parentActivityName=".BookActivity" >
+        </activity>
+        <activity
+            android:name=".BookInformation"
+            android:label="@string/app_name"
+            android:parentActivityName=".BookActivity" >
+        </activity>
+        <activity
+            android:name=".MovieList"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
+            android:name=".MovieListMain"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
+            android:name=".MovieActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".MovieListMain" >
+        </activity>
+
+        <activity
+            android:name=".GuideActivity"
+            android:configChanges="keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity android:name=".MainActivity" />
+
+        <activity
+            android:name=".MovieInformation"
+            android:label="@string/app_name"
+            android:parentActivityName=".MovieActivity" >
+        </activity>
+
+        <activity
+            android:name=".MovieDetails"
+            android:label="@string/app_name"
+            android:parentActivityName=".MovieInformation" >
+        </activity>
+
+        <activity
+            android:name=".MovieInf"
+            android:label="@string/app_name"
+            android:parentActivityName=".MovieInformation" >
+        </activity>
+
+
+        <activity
+            android:name=".test1"
+            android:label="@string/app_name"
+            android:parentActivityName=".BookActivity" >
+        </activity>
+
+    </application>
+
+</manifest>
